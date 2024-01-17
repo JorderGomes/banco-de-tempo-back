@@ -26,7 +26,7 @@ public class Schedule {
     private Long id;
 
     private String weekDay;
-    private LocalTime beguin;
-    private LocalTime end;
+    private LocalTime timeBeguin;
+    private LocalTime timeEnd;
 
 }
