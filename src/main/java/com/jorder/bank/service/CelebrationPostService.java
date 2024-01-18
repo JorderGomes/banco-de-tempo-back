@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.bank.model.CelebrationPost;
+import com.jorder.bank.model.User;
 import com.jorder.bank.repository.CelebrationPostRepository;
+import com.jorder.bank.repository.UserRepository;
 
 @Service
 public class CelebrationPostService {
 
     @Autowired
     CelebrationPostRepository celebrationPostRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public List<CelebrationPost> getCelebrationPosts() {
         return celebrationPostRepository.findAll();
@@ -23,12 +28,17 @@ public class CelebrationPostService {
         return celebrationPostRepository.findById(id);
     }
 
-    public CelebrationPost createCelebrationPost(CelebrationPost celebrationPost) {
+    public CelebrationPost createCelebrationPost(CelebrationPost celebrationPost, Long userId) {
+        Optional<User> optUser = userRepository.findById(userId);
+        if (!optUser.isPresent()) {
+            return null;
+        }
+        celebrationPost.setUser(optUser.get());
         return celebrationPostRepository.save(celebrationPost);
     }
 
     public CelebrationPost editCelebrationPost(Long id, CelebrationPost celebrationPost) {
-        if (!celebrationPostRepository.existsById(id)){
+        if (!celebrationPostRepository.existsById(id)) {
             return null;
         }
         celebrationPost.setId(id);

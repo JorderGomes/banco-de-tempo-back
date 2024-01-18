@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ import com.jorder.bank.service.ScheduleService;
 @RestController
 @RequestMapping("/schedule")
 public class ScheduleController {
-    
+
     @Autowired
     private ScheduleService scheduleService;
 
@@ -30,12 +31,12 @@ public class ScheduleController {
     private ScheduleRepository scheduleRepository;
 
     @GetMapping
-    public ResponseEntity<List<Schedule>> getSchedules(){
+    public ResponseEntity<List<Schedule>> getSchedules() {
         return ResponseEntity.ok(scheduleService.getSchedules());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Schedule> getSchedule(@PathVariable Long id){
+    public ResponseEntity<Schedule> getSchedule(@PathVariable Long id) {
         return scheduleService.getScheduleById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -43,13 +44,19 @@ public class ScheduleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Schedule postSchedule(@RequestBody Schedule schedule){
-        return scheduleService.createSchedule(schedule);
+    public ResponseEntity<Schedule> postSchedule(
+            @RequestBody Schedule schedule,
+            @RequestParam Long userId) {
+        Schedule savedSchedule = scheduleService.createSchedule(schedule, userId);
+        if (savedSchedule == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(savedSchedule);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id){
-        if (!scheduleRepository.existsById(id)){
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
+        if (!scheduleRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         scheduleRepository.deleteById(id);
@@ -57,12 +64,12 @@ public class ScheduleController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Schedule> updateSchedule(@RequestBody Schedule schedule, @PathVariable Long id){
+    public ResponseEntity<Schedule> updateSchedule(@RequestBody Schedule schedule, @PathVariable Long id) {
         Schedule updatedSchedule = scheduleService.editSchedule(id, schedule);
-        if (updatedSchedule == null){
+        if (updatedSchedule == null) {
             return ResponseEntity.notFound().build();
         }
-        return  ResponseEntity.ok(updatedSchedule);
+        return ResponseEntity.ok(updatedSchedule);
     }
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,8 +44,15 @@ public class TalentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Talent postTalent(@RequestBody Talent talent){
-        return talentService.createTalent(talent);
+    public ResponseEntity<Talent> postTalent(
+        @RequestBody Talent talent, 
+        @RequestParam Long userId
+        ){
+        Talent savedTalent = talentService.createTalent(talent, userId);
+        if (savedTalent == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(savedTalent);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -57,7 +65,10 @@ public class TalentController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Talent> updateTalent(@RequestBody Talent talent, @PathVariable Long id){
+    public ResponseEntity<Talent> updateTalent(
+        @RequestBody Talent talent, 
+        @PathVariable Long id
+        ){
         Talent updatedTalent = talentService.editTalent(id, talent);
         if (updatedTalent == null){
             return ResponseEntity.notFound().build();

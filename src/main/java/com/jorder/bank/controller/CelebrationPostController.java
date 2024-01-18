@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ import com.jorder.bank.service.CelebrationPostService;
 @RestController
 @RequestMapping("/celebrationPost")
 public class CelebrationPostController {
-    
+
     @Autowired
     private CelebrationPostService celebrationPostService;
 
@@ -30,12 +31,12 @@ public class CelebrationPostController {
     private CelebrationPostRepository celebrationPostRepository;
 
     @GetMapping
-    public ResponseEntity<List<CelebrationPost>> getCelebrationPosts(){
+    public ResponseEntity<List<CelebrationPost>> getCelebrationPosts() {
         return ResponseEntity.ok(celebrationPostService.getCelebrationPosts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CelebrationPost> getCelebrationPost(@PathVariable Long id){
+    public ResponseEntity<CelebrationPost> getCelebrationPost(@PathVariable Long id) {
         return celebrationPostService.getCelebrationPostById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -43,13 +44,19 @@ public class CelebrationPostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CelebrationPost postCelebrationPost(@RequestBody CelebrationPost celebrationPost){
-        return celebrationPostService.createCelebrationPost(celebrationPost);
+    public ResponseEntity<CelebrationPost> postCelebrationPost(
+            @RequestBody CelebrationPost celebrationPost,
+            @RequestParam Long userId) {
+        CelebrationPost savedCelebrationPost = celebrationPostService.createCelebrationPost(celebrationPost, userId);
+        if (savedCelebrationPost == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(savedCelebrationPost);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteCelebrationPost(@PathVariable Long id){
-        if (!celebrationPostRepository.existsById(id)){
+    public ResponseEntity<Void> deleteCelebrationPost(@PathVariable Long id) {
+        if (!celebrationPostRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         celebrationPostRepository.deleteById(id);
@@ -57,12 +64,13 @@ public class CelebrationPostController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CelebrationPost> updateCelebrationPost(@RequestBody CelebrationPost celebrationPost, @PathVariable Long id){
+    public ResponseEntity<CelebrationPost> updateCelebrationPost(@RequestBody CelebrationPost celebrationPost,
+            @PathVariable Long id) {
         CelebrationPost updatedCelebrationPost = celebrationPostService.editCelebrationPost(id, celebrationPost);
-        if (updatedCelebrationPost == null){
+        if (updatedCelebrationPost == null) {
             return ResponseEntity.notFound().build();
         }
-        return  ResponseEntity.ok(updatedCelebrationPost);
+        return ResponseEntity.ok(updatedCelebrationPost);
     }
 
 }
