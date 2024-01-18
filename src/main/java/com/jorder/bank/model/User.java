@@ -1,6 +1,5 @@
 package com.jorder.bank.model;
 
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,5 +29,7 @@ public class User {
 
     // private List<Talent> talents;
     // private List<CelebrationPost> posts;
+    // private List<Schedule> schedules;
+
 
 }
