@@ -1,5 +1,6 @@
 package com.jorder.bank.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ public class CelebrationPostService {
             return null;
         }
         celebrationPost.setUser(optUser.get());
+        celebrationPost.setPublicationDate(LocalDateTime.now());
         return celebrationPostRepository.save(celebrationPost);
     }
 

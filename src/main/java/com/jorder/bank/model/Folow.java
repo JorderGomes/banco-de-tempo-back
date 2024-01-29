@@ -1,8 +1,5 @@
 package com.jorder.bank.model;
 
-import java.time.LocalDateTime;
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,19 +16,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "celebration_posts", schema = "public")
-public class CelebrationPost {
-
+@Table(name = "folows", schema = "public")
+public class Folow {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String subtitle;
-    private String pictureLink;
-    private int likes;
     @ManyToOne
-    private User user;
-
-    private LocalDateTime publicationDate;
-
+    private User folower;    
+    @ManyToOne
+    private User folowed;
 }

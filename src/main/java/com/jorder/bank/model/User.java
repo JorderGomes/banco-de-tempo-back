@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users", schema = "public")
 public class User {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +25,5 @@ public class User {
     private String name;
     private String email;
     private int balance;
-
-    // private List<Talent> talents;
-    // private List<CelebrationPost> posts;
-    // private List<Schedule> schedules;
-
 
 }
