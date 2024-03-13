@@ -21,7 +21,7 @@ import com.jorder.bank.repository.CelebrationPostRepository;
 import com.jorder.bank.service.CelebrationPostService;
 
 @RestController
-@RequestMapping("/celebrationPost")
+@RequestMapping("/celebration-post")
 public class CelebrationPostController {
 
     @Autowired

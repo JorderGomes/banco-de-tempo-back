@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,11 +41,11 @@ public class ScheduleController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Schedule> postSchedule(
             @RequestBody Schedule schedule,
-            @RequestParam Long userId) {
+            @PathVariable Long userId) {
         Schedule savedSchedule = scheduleService.createSchedule(schedule, userId);
         if (savedSchedule == null) {
             return ResponseEntity.notFound().build();
