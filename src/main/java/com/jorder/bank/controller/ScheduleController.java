@@ -41,7 +41,7 @@ public class ScheduleController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Schedule> postSchedule(
             @RequestBody Schedule schedule,

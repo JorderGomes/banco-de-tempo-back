@@ -1,5 +1,6 @@
 package com.jorder.bank.service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,9 @@ public class ScheduleService {
             return null;
         }
         schedule.setUser(optUser.get());
+        schedule.setQtdHours(
+            Integer.parseInt(String.valueOf(ChronoUnit.HOURS.between(schedule.getTimeBeguin(), schedule.getTimeEnd())))
+        );
         return scheduleRepository.save(schedule);
     }
 

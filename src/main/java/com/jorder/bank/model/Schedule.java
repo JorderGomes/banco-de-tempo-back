@@ -29,6 +29,7 @@ public class Schedule {
     private String weekDay;
     private LocalTime timeBeguin;
     private LocalTime timeEnd;
+    private int qtdHours;
     @ManyToOne
     private User user;
     
