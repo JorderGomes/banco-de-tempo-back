@@ -12,6 +12,7 @@ import com.jorder.bank.model.StatusFavor;
 import com.jorder.bank.repository.FavorRequestRepository;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,5 +53,19 @@ public class FavorRequestController {
     }
 
     // todo: patch update favor
-
+    @PatchMapping("/{id_favor}")
+    public ResponseEntity<Object> updateStatusFavor(@RequestBody StatusFavor newStatus, @PathVariable Long id_favor) {
+        var optFavorRequest = favorRequestRepository.findById(id_favor);
+        if (optFavorRequest.isPresent()) {
+            var favorRequest = optFavorRequest.get();
+            try {
+                favorRequest.updateStatus(newStatus);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+            favorRequestRepository.save(favorRequest);
+            return ResponseEntity.ok(favorRequest);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

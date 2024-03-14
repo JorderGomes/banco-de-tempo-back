@@ -4,5 +4,5 @@ public enum StatusFavor {
     SOLICITADA,
     ACEITA,
     CANCELADA,
-    CONCLUÍDA
+    CONCLUIDA
 }
