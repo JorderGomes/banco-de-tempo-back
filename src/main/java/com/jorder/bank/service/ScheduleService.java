@@ -29,25 +29,20 @@ public class ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public Schedule createSchedule(Schedule schedule, Long userId) {
-        Optional<User> optUser = userRepository.findById(userId);
-        if (!optUser.isPresent()){
-            return null;
-        }
-        schedule.setUser(optUser.get());
+    public Schedule createSchedule(Schedule schedule) {
         schedule.setQtdHours(
             Integer.parseInt(String.valueOf(ChronoUnit.HOURS.between(schedule.getTimeBeguin(), schedule.getTimeEnd())))
         );
         return scheduleRepository.save(schedule);
     }
 
-    public Schedule editSchedule(Long id, Schedule schedule) {
+    public Schedule editSchedule(Long id, Schedule newSchedule) {
         if (!scheduleRepository.existsById(id)){
             return null;
         }
-        schedule.setId(id);
-        schedule = scheduleRepository.save(schedule);
-        return schedule;
+        newSchedule.setId(id);
+        newSchedule = scheduleRepository.save(newSchedule);
+        return newSchedule;
     }
 
     public void deleteSchedule(Long id) {

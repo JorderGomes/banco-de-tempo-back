@@ -37,13 +37,15 @@ public class TalentService {
         return talentRepository.save(talent);
     }
 
-    public Talent editTalent(Long id, Talent talent) {
+    public Talent editTalent(Long id, Talent newTalent) {
         if (!talentRepository.existsById(id)){
             return null;
         }
-        talent.setId(id);
-        talent = talentRepository.save(talent);
-        return talent;
+        newTalent.setId(id);
+        Talent talent = talentRepository.findById(id).get();
+        newTalent.setUser(talent.getUser());
+        newTalent = talentRepository.save(newTalent);
+        return newTalent;
     }
 
     public void deleteTalent(Long id) {

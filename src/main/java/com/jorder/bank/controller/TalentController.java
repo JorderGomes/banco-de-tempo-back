@@ -41,12 +41,9 @@ public class TalentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Talent> postTalent(
-        @RequestBody Talent talent, 
-        @PathVariable Long userId
-        ){
+    public ResponseEntity<Talent> postTalent(@RequestBody Talent talent, @PathVariable Long userId){
         Talent savedTalent = talentService.createTalent(talent, userId);
         if (savedTalent == null){
             return ResponseEntity.notFound().build();

@@ -41,12 +41,10 @@ public class ScheduleController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/user/{userId}")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Schedule> postSchedule(
-            @RequestBody Schedule schedule,
-            @PathVariable Long userId) {
-        Schedule savedSchedule = scheduleService.createSchedule(schedule, userId);
+    public ResponseEntity<Schedule> postSchedule(@RequestBody Schedule schedule) {
+        Schedule savedSchedule = scheduleService.createSchedule(schedule);
         if (savedSchedule == null) {
             return ResponseEntity.notFound().build();
         }

@@ -30,7 +30,6 @@ public class Schedule {
     private LocalTime timeBeguin;
     private LocalTime timeEnd;
     private int qtdHours;
-    @ManyToOne
-    private User user;
+    
     
 }
