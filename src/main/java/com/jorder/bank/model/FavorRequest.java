@@ -25,12 +25,16 @@ public class FavorRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    
     @ManyToOne
     private User applicant;
+    
     @ManyToOne
     private User required;
+    
     @ManyToOne
     private Schedule schedule;
+    
     @Enumerated(EnumType.STRING)
     StatusFavor statusFavor;
 

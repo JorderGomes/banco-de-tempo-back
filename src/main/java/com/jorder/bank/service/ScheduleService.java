@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.bank.model.Schedule;
-import com.jorder.bank.model.User;
+// import com.jorder.bank.model.User;
 import com.jorder.bank.repository.ScheduleRepository;
 import com.jorder.bank.repository.UserRepository;
 
