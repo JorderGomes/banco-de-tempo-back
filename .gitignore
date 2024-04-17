@@ -7,6 +7,8 @@ target/
 ### env ###
 
 .env
+/uploads/*
+
 
 ### STS ###
 .apt_generated
