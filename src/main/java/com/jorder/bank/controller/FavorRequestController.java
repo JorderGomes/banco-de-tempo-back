@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jorder.bank.model.FavorRequest;
+import com.jorder.bank.model.Schedule;
 import com.jorder.bank.model.StatusFavor;
-import com.jorder.bank.repository.FavorRequestRepository;
+import com.jorder.bank.service.FavorRequestService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,50 +23,53 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class FavorRequestController {
 
     @Autowired
-    private FavorRequestRepository favorRequestRepository;
+    private FavorRequestService favorRequestService;
 
     @GetMapping
     public ResponseEntity<List<FavorRequest>> getFavorRequestList() {
-        return ResponseEntity.ok(favorRequestRepository.findAll());
+        return ResponseEntity.ok(favorRequestService.getFavorRequests());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FavorRequest> getFavorRequestById(@PathVariable Long id) {
-        return favorRequestRepository.findById(id)
+        return favorRequestService.getFavorRequestById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // todo: get All by User
     @GetMapping("/applicant/{id_applicant}")
     public List<FavorRequest> getFavorRequestsByApplicant(@PathVariable Long id_applicant) {
-        return favorRequestRepository.findAllFavorRequestByApplicant(id_applicant);
+        return favorRequestService.getFavorRequestsByApplicant(id_applicant);
     }
 
     // todo: get One by User
 
-    // todo: post request favor
     @PostMapping("")
     public FavorRequest postFavorRequest( @RequestBody FavorRequest favorRequest) {
-        favorRequest.setStatusFavor(StatusFavor.SOLICITADA);
-        var createdFavorRequest = favorRequestRepository.save(favorRequest);
-        return createdFavorRequest;
+        return favorRequestService.createFavorRequest(favorRequest);
     }
 
     // todo: patch update favor
-    @PatchMapping("/{id_favor}")
+    @PatchMapping("/update-status/{id_favor}")
     public ResponseEntity<Object> updateStatusFavor(@RequestBody StatusFavor newStatus, @PathVariable Long id_favor) {
-        var optFavorRequest = favorRequestRepository.findById(id_favor);
-        if (optFavorRequest.isPresent()) {
-            var favorRequest = optFavorRequest.get();
-            try {
-                favorRequest.updateStatus(newStatus);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
+        try {
+            var favorUpdated = favorRequestService.updateStatusFavor(newStatus, id_favor);
+            if (favorUpdated == null) {
+                return ResponseEntity.notFound().build();
             }
-            favorRequestRepository.save(favorRequest);
-            return ResponseEntity.ok(favorRequest);
+            return ResponseEntity.ok(favorUpdated);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/update-schedule/{id_favor}")
+    public ResponseEntity<Object> updateSchedule(@RequestBody Schedule newSchedule, @PathVariable Long id_favor) {
+        try {
+            var favorUpdated = favorRequestService.updateSchedule(newSchedule, id_favor);
+            return ResponseEntity.ok(favorUpdated);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
