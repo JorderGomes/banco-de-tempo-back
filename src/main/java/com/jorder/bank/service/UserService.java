@@ -2,6 +2,7 @@ package com.jorder.bank.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,12 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    private static final Random random = new Random();
+
+    public String generateSalt(){
+        return Integer.toString(Math.abs(random.nextInt()), 36).substring(0, 5);
+    }
+
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -24,6 +31,11 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        String salt = this.generateSalt();
+        user.setSalt(salt);
+        String passwordSalt = user.getPassword() + salt;
+
+
         return userRepository.save(user);
     }
 
@@ -38,6 +50,16 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User updateBalance(Long id, int amount) {
+        var optUser = this.userRepository.findById(id);
+        if (!optUser.isPresent()) {
+            return null;
+        }
+        User currentUser = optUser.get();
+        currentUser.setBalance(currentUser.getBalance() + amount);
+        return this.userRepository.save(currentUser);
     }
 
 }
