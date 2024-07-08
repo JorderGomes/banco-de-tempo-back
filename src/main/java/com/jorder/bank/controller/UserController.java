@@ -43,6 +43,15 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/{id}/update-password")
+    public ResponseEntity<User> updateBalance(@PathVariable Long id, @RequestParam String newPassword){
+        var userUpdated = userService.updatePassword(id, newPassword);
+        if (userUpdated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userUpdated);
+    }
+
     @PatchMapping("/{id}/update-balance")
     public ResponseEntity<User> updateBalance(@PathVariable Long id, @RequestParam int amount){
         var userUpdated =  userService.updateBalance(id, amount);
