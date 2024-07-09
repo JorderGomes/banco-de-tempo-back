@@ -61,10 +61,15 @@ public class UserController {
         return ResponseEntity.ok(userUpdated);
     }
 
+    @SuppressWarnings("rawtypes")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User postUser(@RequestBody User user){
-        return userService.createUser(user);
+    public ResponseEntity postUser(@RequestBody User user){
+        try {
+            return ResponseEntity.ok(userService.createUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/{id}")
