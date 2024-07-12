@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.bank.model.Schedule;
+import com.jorder.bank.model.User;
 import com.jorder.bank.repository.ScheduleRepository;
+import com.jorder.bank.repository.UserRepository;
 
 @Service
 public class ScheduleService {
@@ -16,7 +18,8 @@ public class ScheduleService {
     @Autowired
     ScheduleRepository scheduleRepository;
 
-    
+    @Autowired
+    UserRepository userRepository;
 
     public List<Schedule> getSchedules() {
         return scheduleRepository.findAll();
@@ -26,7 +29,12 @@ public class ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public Schedule createSchedule(Schedule schedule) {
+    public Schedule createSchedule(Schedule schedule, Long userId) {
+        Optional<User> optUser = userRepository.findById(userId);
+        if (!optUser.isPresent()){
+            return null;
+        }
+        schedule.setUser(optUser.get());
         schedule = this.calcQtdHours(schedule);
         return scheduleRepository.save(schedule);
     }
@@ -38,7 +46,10 @@ public class ScheduleService {
         
         newSchedule.setId(id);
         newSchedule = this.calcQtdHours(newSchedule);
+        Schedule schedule = scheduleRepository.findById(id).get();
+        newSchedule.setUser(schedule.getUser());
         newSchedule = scheduleRepository.save(newSchedule);
+
         return newSchedule;
     }
 

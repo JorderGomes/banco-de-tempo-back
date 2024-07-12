@@ -1,5 +1,7 @@
 package com.jorder.bank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,16 +26,22 @@ public class FavorRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     
     @ManyToOne
     private User applicant;
     
     @ManyToOne
     private User required;
+
+    @ManyToOne
+    @JsonIgnoreProperties("user")
+    private Talent talentRequired;
     
     @ManyToOne
+    @JsonIgnoreProperties("user")
     private Schedule schedule;
+
+    private int qtdHours;
     
     @Enumerated(EnumType.STRING)
     StatusFavor statusFavor;
