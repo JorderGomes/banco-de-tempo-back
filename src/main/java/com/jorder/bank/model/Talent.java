@@ -1,6 +1,10 @@
 package com.jorder.bank.model;
 
+import com.jorder.bank.model.enums.Category;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +28,12 @@ public class Talent {
     private Long id;
 
     private String name;
+    
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     @ManyToOne
     private User user;
 
