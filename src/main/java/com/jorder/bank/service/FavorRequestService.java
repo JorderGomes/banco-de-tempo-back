@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.bank.model.FavorRequest;
-import com.jorder.bank.model.Schedule;
 import com.jorder.bank.model.StatusFavor;
 import com.jorder.bank.repository.FavorRequestRepository;
 
@@ -17,8 +16,6 @@ public class FavorRequestService {
     @Autowired
     private FavorRequestRepository favorRepository;
 
-    @Autowired
-    private ScheduleService scheduleService;
 
     public List<FavorRequest> getFavorRequests() {
         return favorRepository.findAll();
@@ -28,12 +25,9 @@ public class FavorRequestService {
         return favorRepository.findById(id);
     }
 
-    public FavorRequest createFavorRequest(FavorRequest favorRequest) {
+    public FavorRequest createFavorRequest(FavorRequest favorRequest) throws Exception {
         favorRequest.setStatusFavor(StatusFavor.SOLICITADA);
-
-        Schedule currentSchedule = scheduleService.createSchedule(favorRequest.getSchedule());
-        favorRequest.setSchedule(currentSchedule);
-
+        this.validateQtdHours(favorRequest, favorRequest.getQtdHours());
         return favorRepository.save(favorRequest);
     }
 
@@ -68,15 +62,23 @@ public class FavorRequestService {
         return null;
     }
 
-    public FavorRequest updateSchedule(Schedule schedule, Long id_favor) throws Exception {
+    public FavorRequest updateQtdHours(Long id_favor, int qtdHours) throws Exception{
         var optFavorRequest = favorRepository.findById(id_favor);
+        
         if (optFavorRequest.isPresent()) {
             var favorRequest = optFavorRequest.get();
-            schedule = this.scheduleService.editSchedule(schedule.getId(), schedule);
-            favorRequest.setSchedule(schedule);
+            this.validateQtdHours(favorRequest, qtdHours);
             favorRepository.save(favorRequest);
             return favorRequest;
         }
-        throw new Exception("Solicitação de favor não encontrado.");
+        
+        throw new Exception("Requisição de favor não encontrada.");
     }
+
+    public void validateQtdHours(FavorRequest request, int qtdHours) throws Exception{
+        if (request.getSchedule().getQtdHours() > request.getQtdHours()) {
+            throw new Exception("Por favor solicite uma quantidade de horas disponível.");
+        }
+    }
+
 }

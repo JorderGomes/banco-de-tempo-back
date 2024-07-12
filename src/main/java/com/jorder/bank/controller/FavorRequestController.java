@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jorder.bank.model.FavorRequest;
-import com.jorder.bank.model.Schedule;
 import com.jorder.bank.model.StatusFavor;
 import com.jorder.bank.service.FavorRequestService;
 
@@ -45,12 +45,16 @@ public class FavorRequestController {
     // todo: get One by User
 
     @PostMapping("")
-    public FavorRequest postFavorRequest( @RequestBody FavorRequest favorRequest) {
-        return favorRequestService.createFavorRequest(favorRequest);
+    public ResponseEntity<Object> postFavorRequest( @RequestBody FavorRequest favorRequest) {
+        try {
+            var currentFavorRequest = favorRequestService.createFavorRequest(favorRequest);
+            return ResponseEntity.ok(currentFavorRequest);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    // todo: patch update favor
-    @PatchMapping("/update-status/{id_favor}")
+    @PatchMapping("/{id_favor}/update-status")
     public ResponseEntity<Object> updateStatusFavor(@RequestBody StatusFavor newStatus, @PathVariable Long id_favor) {
         try {
             var favorUpdated = favorRequestService.updateStatusFavor(newStatus, id_favor);
@@ -63,13 +67,13 @@ public class FavorRequestController {
         }
     }
 
-    @PatchMapping("/update-schedule/{id_favor}")
-    public ResponseEntity<Object> updateSchedule(@RequestBody Schedule newSchedule, @PathVariable Long id_favor) {
+    @PatchMapping("/{id_favor}/update-qtd-hours")
+    public ResponseEntity<Object> updateQtdHours(@PathVariable Long id_favor, @RequestParam int qtdHours){
         try {
-            var favorUpdated = favorRequestService.updateSchedule(newSchedule, id_favor);
-            return ResponseEntity.ok(favorUpdated);
+            return ResponseEntity.ok(this.favorRequestService.updateQtdHours(id_favor, qtdHours));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());   
         }
     }
+
 }
