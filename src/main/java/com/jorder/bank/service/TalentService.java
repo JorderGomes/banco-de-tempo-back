@@ -52,4 +52,12 @@ public class TalentService {
         talentRepository.deleteById(id);
     }
 
+    public List<Talent> getTalentsByUser(Long userId) {
+        var optUser = this.userRepository.findById(userId);
+        if (!optUser.isPresent()) {
+            return null;
+        }
+        return this.talentRepository.findByUser(optUser.get());
+    }
+
 }

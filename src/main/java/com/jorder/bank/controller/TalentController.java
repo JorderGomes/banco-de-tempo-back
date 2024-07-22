@@ -29,9 +29,9 @@ public class TalentController {
     @Autowired
     private TalentRepository talentRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Talent>> getTalents(){
-        return ResponseEntity.ok(talentService.getTalents());
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Talent>> getTalents(@PathVariable Long userId){
+        return ResponseEntity.ok(talentService.getTalentsByUser(userId));
     }
 
     @GetMapping("/{id}")
