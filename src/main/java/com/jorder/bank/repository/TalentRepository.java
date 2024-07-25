@@ -11,10 +11,6 @@ import com.jorder.bank.model.User;
 @Repository
 public interface TalentRepository extends JpaRepository<Talent, Long>{
     
-    /*
-     @Query("select f.folower from Folow f where f.folowed.id = :folowed_id")
-    List<User> findFolowersByFolowedId(@Param("folowed_id") Long folowed_id);
-    */
     List<Talent> findByUser(User user);
 
 }

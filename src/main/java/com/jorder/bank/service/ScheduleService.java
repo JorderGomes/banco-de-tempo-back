@@ -64,4 +64,12 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
+    public List<Schedule> getSchedulesByUser(Long userId) {
+        var optUser = this.userRepository.findById(userId);
+        if (!optUser.isPresent()) {
+            return null;
+        }
+        return this.scheduleRepository.findByUser(optUser.get());
+    }
+
 }
