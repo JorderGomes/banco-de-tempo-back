@@ -29,9 +29,9 @@ public class ScheduleController {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Schedule>> getSchedules() {
-        return ResponseEntity.ok(scheduleService.getSchedules());
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Schedule>> getSchedules(@PathVariable Long userId) {
+        return ResponseEntity.ok(scheduleService.getSchedulesByUser(userId));
     }
 
     @GetMapping("/{id}")
