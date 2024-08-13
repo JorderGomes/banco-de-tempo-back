@@ -2,6 +2,7 @@ package com.jorder.bank.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,15 @@ public class TalentService {
             return null;
         }
         return this.talentRepository.findByUser(optUser.get());
+    }
+
+    public void getAvaliableTalents() {
+        var talents = this.talentRepository.findTalentsAvaliable();
+        talents.stream().map(talent -> {
+            
+            return talent;
+        }).collect(Collectors.toList());
+        System.out.println();
     }
 
 }

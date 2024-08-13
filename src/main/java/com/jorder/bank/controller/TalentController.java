@@ -41,6 +41,12 @@ public class TalentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/avaliables")
+    public ResponseEntity<String> getAvaliableTalents(){
+        talentService.getAvaliableTalents();
+        return ResponseEntity.ok("em construção...");
+    }
+
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Talent> postTalent(@RequestBody Talent talent, @PathVariable Long userId){
