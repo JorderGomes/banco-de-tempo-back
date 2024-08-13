@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jorder.bank.model.Talent;
+import com.jorder.bank.model.dto.TalentsAvaliableDto;
 import com.jorder.bank.repository.TalentRepository;
 import com.jorder.bank.service.TalentService;
 
@@ -42,9 +43,8 @@ public class TalentController {
     }
 
     @GetMapping("/avaliables")
-    public ResponseEntity<String> getAvaliableTalents(){
-        talentService.getAvaliableTalents();
-        return ResponseEntity.ok("em construção...");
+    public ResponseEntity<List<TalentsAvaliableDto>> getAvaliableTalents(){
+        return ResponseEntity.ok(talentService.getAvaliableTalents());
     }
 
     @PostMapping("/user/{userId}")

@@ -1,30 +1,22 @@
 package com.jorder.bank.model.dto;
 
-import java.time.LocalTime;
-// import java.util.List;
-// import com.jorder.bank.model.Schedule;
+import java.util.List;
 
-// import lombok.AllArgsConstructor;
-// import lombok.Builder;
-// import lombok.Data;
-// import lombok.NoArgsConstructor;
+import com.jorder.bank.model.Schedule;
 
-// @Data
-// @Builder
-// @NoArgsConstructor
-// @AllArgsConstructor
-public interface TalentsAvaliableDto {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TalentsAvaliableDto {
     
-    String getName();
+    private String name;
     
-    String getDescription();
-    
-    String getWeekDay();
-    
-    LocalTime getTimeBeguin();
-    
-    LocalTime getTimeEnd();
-    
-    int getQtdHours();
+    private String description;
+
+    private List<Schedule> schedules;
 
 }
