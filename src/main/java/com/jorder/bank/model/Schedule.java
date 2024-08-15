@@ -3,6 +3,8 @@ package com.jorder.bank.model;
 
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +41,7 @@ public class Schedule {
     private LocalTime timeEnd;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
     
     private int qtdHours;

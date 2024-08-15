@@ -81,6 +81,7 @@ public class TalentService {
                 TalentsAvaliableDto newTalentAvaliableDto = new TalentsAvaliableDto(
                     currentTalent.getName(),
                     currentTalent.getDescription(),
+                    currentTalent.getUser(),
                     newSchedules
                 );
                 talentsMap.put(

@@ -1,5 +1,6 @@
 package com.jorder.bank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jorder.bank.model.enums.Category;
 
 import jakarta.persistence.Entity;
@@ -35,6 +36,7 @@ public class Talent {
     private Category category;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
 }
