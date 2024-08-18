@@ -1,5 +1,6 @@
 package com.jorder.bank.service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,8 +67,11 @@ public class TalentService {
         return this.talentRepository.findByUser(optUser.get());
     }
 
-    public List<TalentsAvaliableDto> getAvaliableTalents() {
-        var talentsAvaliableProjection = this.talentRepository.findTalentsAvaliable();
+    public List<TalentsAvaliableDto> getAvaliableTalents(String category, String weekDay, LocalTime timeBeguin) {
+        var talentsAvaliableProjection = this.talentRepository.findTalentsAvaliable(
+            category, weekDay, timeBeguin
+        );
+        
         Map<String, TalentsAvaliableDto> talentsMap = new HashMap<String, TalentsAvaliableDto>();
         talentsAvaliableProjection.stream().map(currentTalent -> {
             if (!talentsMap.containsKey(currentTalent.getName().concat(currentTalent.getDescription()))) {
