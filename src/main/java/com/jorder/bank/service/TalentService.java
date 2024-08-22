@@ -9,13 +9,13 @@ package com.jorder.bank.service;
 // import com.jorder.bank.model.dto.TalentsAvaliableDto;
 
 import java.util.Optional;
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.bank.model.Talent;
 import com.jorder.bank.model.User;
+import com.jorder.bank.model.enums.Category;
 import com.jorder.bank.repository.TalentRepository;
 import com.jorder.bank.repository.UserRepository;
 
@@ -68,6 +68,17 @@ public class TalentService {
         return this.talentRepository.findByUser(optUser.get());
     }
 
-    
+    public List<Talent> getTalentsByCategory(String category, String name) {
+        Category categoryEnum = this.convertStringToCategory(category);
+        return this.talentRepository.findByCategoryAndNameContaining(categoryEnum, name);
+    }
+
+    public Category convertStringToCategory(String category){
+        try {
+            return Category.valueOf(category.toUpperCase());
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

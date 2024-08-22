@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jorder.bank.model.Talent;
 import com.jorder.bank.repository.TalentRepository;
 import com.jorder.bank.service.TalentService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/talent")
@@ -40,6 +42,15 @@ public class TalentController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("")
+    public ResponseEntity<List<Talent>> getMethodName(
+        @RequestParam String category,
+        @RequestParam String name
+        ) {
+        return ResponseEntity.ok(talentService.getTalentsByCategory(category, name));
+    }
+    
 
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)

@@ -11,11 +11,14 @@ import org.springframework.stereotype.Repository;
 
 import com.jorder.bank.model.Talent;
 import com.jorder.bank.model.User;
+import com.jorder.bank.model.enums.Category;
 
 @Repository
 public interface TalentRepository extends JpaRepository<Talent, Long>{
     
     List<Talent> findByUser(User user);
+
+    List<Talent> findByCategoryAndNameContaining(Category category, String name);
 
 }
 
