@@ -1,6 +1,11 @@
 package com.jorder.bank.model;
 
 
+// import java.util.List;
+// import java.util.Set;
+// import jakarta.persistence.OneToMany;
+// import jakarta.persistence.FetchType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -28,6 +33,12 @@ public class User {
     private String email;
     private String password;
     private int balance;
+
+    // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    // private Set<Talent> talents;
+
+    // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    // private Set<Schedule> schedules;
     
     @JsonIgnore
     private String salt;

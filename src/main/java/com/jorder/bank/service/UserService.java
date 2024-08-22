@@ -1,5 +1,8 @@
 package com.jorder.bank.service;
 
+// import java.time.LocalTime;
+// import java.util.ArrayList;
+// import com.jorder.bank.model.dto.TalentsAvaliableDto;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -82,5 +85,12 @@ public class UserService {
         currentUser.setBalance(currentUser.getBalance() + amount);
         return this.userRepository.save(currentUser);
     }
+
+    // public List<User> getAvaliableTalents(
+    //     String category, String weekDay, LocalTime timeBeguin
+    //     ) {
+    //         var result = this.userRepository.findAvaliableTalents(category, weekDay, timeBeguin); 
+    //         return result;
+    // }
 
 }
