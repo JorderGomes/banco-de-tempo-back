@@ -1,13 +1,21 @@
 package com.jorder.bank.service;
 
-import java.util.List;
-import java.util.Optional;
+// import java.time.LocalTime;
+// import java.util.ArrayList;
+// import java.util.HashMap;
+// import java.util.Map;
+// import java.util.stream.Collectors;
+// import com.jorder.bank.model.Schedule;
+// import com.jorder.bank.model.dto.TalentsAvaliableDto;
 
+import java.util.Optional;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.bank.model.Talent;
 import com.jorder.bank.model.User;
+import com.jorder.bank.model.enums.Category;
 import com.jorder.bank.repository.TalentRepository;
 import com.jorder.bank.repository.UserRepository;
 
@@ -58,6 +66,19 @@ public class TalentService {
             return null;
         }
         return this.talentRepository.findByUser(optUser.get());
+    }
+
+    public List<Talent> getTalentsByCategory(String category, String name) {
+        Category categoryEnum = this.convertStringToCategory(category);
+        return this.talentRepository.findByCategoryAndNameContaining(categoryEnum, name);
+    }
+
+    public Category convertStringToCategory(String category){
+        try {
+            return Category.valueOf(category.toUpperCase());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
