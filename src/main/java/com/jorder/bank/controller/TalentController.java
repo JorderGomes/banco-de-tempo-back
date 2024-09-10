@@ -44,11 +44,10 @@ public class TalentController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Talent>> getMethodName(
-        @RequestParam String category,
-        @RequestParam String name
+    public ResponseEntity<List<Talent>> getTalentsByCategory(
+        @RequestParam String category
         ) {
-        return ResponseEntity.ok(talentService.getTalentsByCategory(category, name));
+        return ResponseEntity.ok(talentService.getTalentsByCategory(category));
     }
     
 
