@@ -20,6 +20,8 @@ public interface TalentRepository extends JpaRepository<Talent, Long>{
 
     List<Talent> findByCategoryAndNameContaining(Category category, String name);
 
+    List<Talent> findByCategory(Category category);
+
 }
 
 

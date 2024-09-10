@@ -68,9 +68,14 @@ public class TalentService {
         return this.talentRepository.findByUser(optUser.get());
     }
 
-    public List<Talent> getTalentsByCategory(String category, String name) {
+    public List<Talent> getTalentsByCategoryAndName(String category, String name) {
         Category categoryEnum = this.convertStringToCategory(category);
         return this.talentRepository.findByCategoryAndNameContaining(categoryEnum, name);
+    }
+
+    public List<Talent> getTalentsByCategory(String category){
+        Category categoryEnum = this.convertStringToCategory(category);
+        return this.talentRepository.findByCategory(categoryEnum);
     }
 
     public Category convertStringToCategory(String category){
