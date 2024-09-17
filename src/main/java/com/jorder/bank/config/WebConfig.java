@@ -13,13 +13,15 @@ public class WebConfig {
     @Value("${allowed.origin}")
     private String allowedOrigin;
 
+    private String vercelOrigin = "https://banco-de-tempo-front.vercel.app";
+
     @Bean
     public WebMvcConfigurer corsConfigurer(){
         return new WebMvcConfigurer(){
             @Override
             public void addCorsMappings(CorsRegistry corsRegistry){
                 corsRegistry.addMapping("/**")
-                    .allowedOrigins("http://localhost:4200", allowedOrigin)
+                    .allowedOrigins("http://localhost:4200", allowedOrigin, vercelOrigin)
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                     .allowedHeaders("*")
                     .allowCredentials(true);
