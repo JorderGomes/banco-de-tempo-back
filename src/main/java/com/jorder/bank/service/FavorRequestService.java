@@ -76,7 +76,7 @@ public class FavorRequestService {
     }
 
     public void validateQtdHours(FavorRequest request, int qtdHours) throws Exception{
-        if (request.getSchedule().getQtdHours() > request.getQtdHours()) {
+        if (request.getSchedule().getQtdHours() < qtdHours) {
             throw new Exception("Por favor solicite uma quantidade de horas disponível.");
         }
     }
