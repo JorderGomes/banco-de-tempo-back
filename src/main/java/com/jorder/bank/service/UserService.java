@@ -24,10 +24,12 @@ public class UserService {
 
     private static final Random random = new Random();
 
+    // Auxiliar methods
     public String generateSalt(){
         return Integer.toString(Math.abs(random.nextInt()), 36).substring(0, 5);
     }
 
+    // Busisness logic
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -72,7 +74,9 @@ public class UserService {
         return this.userRepository.save(currentUser);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id) throws Exception {
+        userRepository.findById(id)
+            .orElseThrow(() -> new Exception("User not found"));
         userRepository.deleteById(id);
     }
 

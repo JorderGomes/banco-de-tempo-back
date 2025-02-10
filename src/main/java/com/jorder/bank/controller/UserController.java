@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jorder.bank.model.User;
-import com.jorder.bank.repository.UserRepository;
 import com.jorder.bank.service.UserService;
 
 @RestController
@@ -27,9 +26,6 @@ public class UserController {
     
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping
     public ResponseEntity<List<User>> getUsers(){
@@ -74,11 +70,12 @@ public class UserController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        if (!userRepository.existsById(id)){
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        userRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")

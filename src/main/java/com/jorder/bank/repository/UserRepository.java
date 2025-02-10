@@ -1,5 +1,7 @@
 package com.jorder.bank.repository;
 
+import java.util.Optional;
+
 // import java.time.LocalTime;
 // import java.util.List;
 // import com.jorder.bank.model.dto.UserTalentsDto;
@@ -17,6 +19,6 @@ import com.jorder.bank.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 
 
-    
+    Optional<User> findByEmail(String email);
 
 }
