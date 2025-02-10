@@ -42,7 +42,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Should create User successfully when data has all fields")
-    void createUserCase1(){
+    void createUserCase1() throws Exception{
         User data = User.builder()
         .id(1L)
         .name("James")
@@ -61,16 +61,47 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Should throw an Exception when name is missing")
+    void createUserCase2() {
+        User user = User.builder() 
+        .email("james@email.com")
+        .password("super_secure")
+        .build();
+
+        assertThrows(Exception.class, () -> userService.createUser(user));
+    }
+
+    @Test
+    @DisplayName("Should throw an Exception when email is missing")
+    void createUserCase3() {
+        User user = User.builder()
+        .name("James")
+        .password("super_secure")
+        .build();
+
+        assertThrows(Exception.class, () -> userService.createUser(user));
+    }
+
+    @Test
+    @DisplayName("Should throw an Exception when password is missing")
+    void createUserCase4() {
+        User user = User.builder()
+        .name("James")
+        .email("james@email.com")
+        .build();
+
+        assertThrows(Exception.class, () -> userService.createUser(user));
+    }
+    
+
+    @Test
     @DisplayName("Should trow an Exception when try to delete an inexistent user")
     void deleteUserCase1(){
-        // Given (cenário)
-        Long userId = 999L; // ID de um usuário que não existe
+        Long userId = 999L; 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // When & Then (ação e verificação)
         assertThrows(Exception.class, () -> userService.deleteUser(userId));
 
-        // Verifica se o método deleteById NUNCA foi chamado (pois o usuário não existe)
         Mockito.verify(userRepository, Mockito.never()).deleteById(userId);
     }
 

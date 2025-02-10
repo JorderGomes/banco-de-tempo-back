@@ -38,7 +38,14 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User createUser(User user) {
+    public User createUser(User user) throws Exception {
+        if (
+            user.getEmail() == null || 
+            user.getPassword() == null ||
+            user.getName() == null
+            ) {
+            throw new Exception("Preencha todos os campos!");
+        }
         String salt = this.generateSalt();
         user.setSalt(salt);
         String passwordSalt = user.getPassword().concat(salt);
