@@ -105,4 +105,26 @@ public class UserServiceTest {
         Mockito.verify(userRepository, Mockito.never()).deleteById(userId);
     }
 
+    @Test
+    @DisplayName("Should trow an Exception when try to edit an inexistent user")
+    void updateUserCase1(){
+        Long userId = 999L; 
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(Exception.class, () -> userService.editUser(userId, new User()));
+
+        Mockito.verify(userRepository, Mockito.never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should trow an Exception when try to update password of an inexistent user")
+    void updatePasswordCase1(){
+        Long userId = 999L; 
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(Exception.class, () -> userService.updatePassword(userId, "newPassword"));
+        
+        Mockito.verify(userRepository, Mockito.never()).save(any());
+    }
+
 }
