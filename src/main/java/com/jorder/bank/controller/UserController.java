@@ -41,11 +41,12 @@ public class UserController {
 
     @PatchMapping("/{id}/update-password")
     public ResponseEntity<User> updateBalance(@PathVariable Long id, @RequestParam String newPassword){
-        var userUpdated = userService.updatePassword(id, newPassword);
-        if (userUpdated == null) {
+        try {
+            User userUpdated = userService.updatePassword(id, newPassword);
+            return ResponseEntity.ok(userUpdated);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(userUpdated);
     }
 
     @PatchMapping("/{id}/update-balance")
@@ -80,11 +81,12 @@ public class UserController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Long id){
-        User updatedUser = userService.editUser(id, user);
-        if (updatedUser == null){
+        try {
+            User updatedUser = userService.editUser(id, user);
+            return  ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        return  ResponseEntity.ok(updatedUser);
     }
 
 
