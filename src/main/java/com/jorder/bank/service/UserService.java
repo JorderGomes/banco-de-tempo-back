@@ -54,25 +54,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User editUser(Long id, User user) {
-        var optUser = this.userRepository.findById(id);
-        if (!optUser.isPresent()) {
-            return null;
-        }
-        user.setPassword(optUser.get().getPassword());
-        user.setSalt(optUser.get().getSalt());
+    public User editUser(Long id, User user) throws Exception {
+        User userDb = this.userRepository.findById(id)
+            .orElseThrow(() -> new Exception("User not found"));
+        
+        user.setPassword(userDb.getPassword());
+        user.setSalt(userDb.getSalt());
         user.setId(id);
         
         user = userRepository.save(user);
         return user;
     }
 
-    public User updatePassword(Long id, String newPassword) {
-        var optUser = this.userRepository.findById(id);
-        if (!optUser.isPresent()) {
-            return null;
-        }
-        User currentUser = optUser.get();
+    public User updatePassword(Long id, String newPassword) throws Exception {
+        User currentUser = this.userRepository.findById(id)
+            .orElseThrow(() -> new Exception("User not found"));
     
         String salt = this.generateSalt(); 
         newPassword.concat(salt);
