@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/update-password")
-    public ResponseEntity<User> updateBalance(@PathVariable Long id, @RequestParam String newPassword){
+    public ResponseEntity<User> updatePassword(@PathVariable Long id, @RequestParam String newPassword){
         try {
             User userUpdated = userService.updatePassword(id, newPassword);
             return ResponseEntity.ok(userUpdated);
@@ -51,11 +51,12 @@ public class UserController {
 
     @PatchMapping("/{id}/update-balance")
     public ResponseEntity<User> updateBalance(@PathVariable Long id, @RequestParam int amount){
-        var userUpdated =  userService.updateBalance(id, amount);
-        if (userUpdated == null) {
+        try {
+            User userUpdated = userService.updateBalance(id, amount);
+            return ResponseEntity.ok(userUpdated);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(userUpdated);
     }
 
     @SuppressWarnings("rawtypes")

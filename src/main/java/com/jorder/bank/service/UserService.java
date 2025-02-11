@@ -83,12 +83,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User updateBalance(Long id, int amount) {
-        var optUser = this.userRepository.findById(id);
-        if (!optUser.isPresent()) {
-            return null;
+    public User updateBalance(Long id, int amount) throws Exception {
+        User currentUser = this.userRepository.findById(id)
+            .orElseThrow(() -> new Exception("User not found"));
+
+        if ((currentUser.getBalance() + amount) < 0){
+            throw new Exception("Saldo insuficiente.");
         }
-        User currentUser = optUser.get();
+        
         currentUser.setBalance(currentUser.getBalance() + amount);
         return this.userRepository.save(currentUser);
     }

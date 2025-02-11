@@ -92,7 +92,6 @@ public class UserServiceTest {
 
         assertThrows(Exception.class, () -> userService.createUser(user));
     }
-    
 
     @Test
     @DisplayName("Should trow an Exception when try to delete an inexistent user")
@@ -123,6 +122,56 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(Exception.class, () -> userService.updatePassword(userId, "newPassword"));
+        
+        Mockito.verify(userRepository, Mockito.never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should update sucessfully a balance to a valid User")
+    void updateBalanceCase1() throws Exception {
+        Long userId = 1L; 
+        User data = User.builder()
+        .id(1L)
+        .name("James")
+        .email("james@email.com")
+        .password("super_secure")
+        .balance(100)
+        .build();
+        
+        when(userRepository.findById(userId)).thenReturn(Optional.of(data));
+        when(userRepository.save(data)).thenReturn(data);
+
+        userService.updateBalance(userId, 10);
+
+        verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    @DisplayName("Should throw a Exception when try to update balance of a inexistent user")
+    void updateBalanceCase2(){
+        Long userId = 999L;
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(Exception.class, () -> userService.updateBalance(userId, 10));
+        
+        Mockito.verify(userRepository, Mockito.never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should throw a Exception when try to debit more than the balance")
+    void updateBalanceCase3(){
+        Long userId = 1L;
+        User data = User.builder()
+        .id(1L)
+        .name("James")
+        .email("james@email.com")
+        .password("super_secure")
+        .balance(100)
+        .build();
+        
+        when(userRepository.findById(userId)).thenReturn(Optional.of(data));
+
+        assertThrows(Exception.class, () -> userService.updateBalance(userId, -110));
         
         Mockito.verify(userRepository, Mockito.never()).save(any());
     }
